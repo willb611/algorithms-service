@@ -1,7 +1,7 @@
 import com.twitter.util.{Await, Future}
 import java.net.InetSocketAddress
 
-import algorithms.sequences.{FibonacciFinder, MatricesFibonacciFinder}
+import algorithms.sequences.{CachingFibonacciFinder, FibonacciFinder}
 import io.finch._
 import io.finch.request._
 import io.finch.response._
@@ -9,6 +9,7 @@ import com.twitter.finagle._
 import com.twitter.finagle.Httpx
 import com.twitter.finagle.httpx._
 import com.twitter.finagle.httpx.path.{Path, _}
+import endpoints.FibonacciSequenceEndPoint
 
 object WebServer extends App {
 
@@ -27,7 +28,7 @@ object MyEndpoint extends Endpoint[HttpRequest, HttpResponse] {
 //      Service.mk(req =>
 //        Ok(s"Skipping sequence ${}").toFuture
 //      )
-    case Method.Get -> Root / "sequences" / "fibonacci" => SequenceEndPoint
+    case Method.Get -> Root / "sequences" / "fibonacci" => FibonacciSequenceEndPoint
 
 //    case Method.Post -> Root / "user" =>
 //      //curl -X POST 'http://localhost:9090/user?name=Andrea&age=65'
@@ -47,17 +48,3 @@ object MyEndpoint extends Endpoint[HttpRequest, HttpResponse] {
   }
 }
 
-object SequenceEndPoint extends Endpoint[HttpRequest, HttpResponse] {
-  val fibonacciFinder: FibonacciFinder = new MatricesFibonacciFinder()
-
-  override def route = {
-    case Method.Get -> Root / "sequences" / "fibonacci" => Service.mk(req => {
-        for {
-          termNumber <- RequiredParam("n")(req).map(_.toInt)
-        } yield {
-          val result = fibonacciFinder.findNthTermInSequence(termNumber).intValue()
-          Ok(s"$result")
-        }
-    })
-  }
-}
