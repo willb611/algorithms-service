@@ -14,7 +14,7 @@ object FibonacciSequenceEndPoint extends Endpoint[HttpRequest, HttpResponse] {
   override def route = {
     case Method.Get -> Root / "sequences" / "fibonacci" => Service.mk(req => {
         for {
-          termNumber <- RequiredParam("n")(req).map(_.toInt)
+          termNumber <- RequiredParam("termNumber")(req).map(_.toInt)
         } yield {
           val result = fibonacciFinder.findNthTermInSequence(termNumber).intValue()
           Ok(s"$result")

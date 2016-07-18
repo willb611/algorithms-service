@@ -1,15 +1,12 @@
-import com.twitter.util.{Await, Future}
 import java.net.InetSocketAddress
 
-import algorithms.sequences.{CachingFibonacciFinder, FibonacciFinder}
-import io.finch._
-import io.finch.request._
-import io.finch.response._
-import com.twitter.finagle._
-import com.twitter.finagle.Httpx
+import com.twitter.finagle.{Httpx, _}
 import com.twitter.finagle.httpx._
 import com.twitter.finagle.httpx.path.{Path, _}
-import endpoints.FibonacciSequenceEndPoint
+import com.twitter.util.Await
+import endpoints.{BinomialEndpoint, FibonacciSequenceEndPoint}
+import io.finch._
+import io.finch.response._
 
 object WebServer extends App {
 
@@ -22,12 +19,8 @@ object WebServer extends App {
 
 object MyEndpoint extends Endpoint[HttpRequest, HttpResponse] {
 
-  def route = {
-//    case Method.Get -> Root / "sequences" / String =>
-//      //curl 'http://localhost:9090/hello/Andrea'
-//      Service.mk(req =>
-//        Ok(s"Skipping sequence ${}").toFuture
-//      )
+  def route: PartialFunction[(Method, Path), Service[HttpRequest, HttpResponse]] = {
+    case Method.Get -> Root / "binomial" / "coefficient" => BinomialEndpoint
     case Method.Get -> Root / "sequences" / "fibonacci" => FibonacciSequenceEndPoint
 
 //    case Method.Post -> Root / "user" =>
@@ -42,9 +35,9 @@ object MyEndpoint extends Endpoint[HttpRequest, HttpResponse] {
 //        }
 //      })
     case _ -> path =>
-      Service.mk(req =>
-        BadRequest(s"Service not found for path: ${path.toString.replace(Root.toString, "")}").toFuture
-      )
+    Service.mk(req =>
+      BadRequest(s"Service not found for path: ${path.toString.replace(Root.toString, "")}").toFuture
+    )
   }
 }
 
