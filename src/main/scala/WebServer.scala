@@ -1,27 +1,23 @@
 import java.net.InetSocketAddress
 
 import com.twitter.finagle.{Httpx, _}
-import com.twitter.finagle.httpx._
-import com.twitter.finagle.httpx.path.{Path, _}
 import com.twitter.util.Await
-import endpoints.{BinomialEndpoint, FibonacciSequenceEndPoint}
-import io.finch._
-import io.finch.response._
+import services.{BinomialService, FibonacciSequenceService}
+import io.finch.route.Get
 
 object WebServer extends App {
+
+  val myEndpoint =
+    (Get /  "binomial" / "coefficient" /> BinomialService) |
+      (Get / "sequences" / "fibonacci" /> FibonacciSequenceService)
 
   Await.ready(
     Httpx.serve(
       new InetSocketAddress("localhost", 9090),
-      MyEndpoint))
+      myEndpoint))
 
 }
 
-object MyEndpoint extends Endpoint[HttpRequest, HttpResponse] {
-
-  def route: PartialFunction[(Method, Path), Service[HttpRequest, HttpResponse]] = {
-    case Method.Get -> Root / "binomial" / "coefficient" => BinomialEndpoint
-    case Method.Get -> Root / "sequences" / "fibonacci" => FibonacciSequenceEndPoint
 
 //    case Method.Post -> Root / "user" =>
 //      //curl -X POST 'http://localhost:9090/user?name=Andrea&age=65'
@@ -34,10 +30,9 @@ object MyEndpoint extends Endpoint[HttpRequest, HttpResponse] {
 //          Ok(s"Hello ${user.greet}")
 //        }
 //      })
-    case _ -> path =>
-    Service.mk(req =>
-      BadRequest(s"Service not found for path: ${path.toString.replace(Root.toString, "")}").toFuture
-    )
-  }
-}
+//    case _ -> path =>
+//    Service.mk(req =>
+//      BadRequest(s"Service not found for path: ${path.toString.replace(Root.toString, "")}").toFuture
+//    )
+//}
 
