@@ -18,21 +18,3 @@ object WebServer extends App {
 
 }
 
-
-//    case Method.Post -> Root / "user" =>
-//      //curl -X POST 'http://localhost:9090/user?name=Andrea&age=65'
-//      Service.mk(req => {
-//        for {
-//          name <- RequiredParam("name")(req)
-//          age <- RequiredParam("age")(req).map(_.toInt)
-//        } yield {
-//          val user = User(name, age)
-//          Ok(s"Hello ${user.greet}")
-//        }
-//      })
-//    case _ -> path =>
-//    Service.mk(req =>
-//      BadRequest(s"Service not found for path: ${path.toString.replace(Root.toString, "")}").toFuture
-//    )
-//}
-
