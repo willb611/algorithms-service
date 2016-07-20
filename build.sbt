@@ -11,7 +11,7 @@ crossScalaVersions := Seq("2.9.2", "2.11.8")
 resolvers += Resolver.mavenLocal
 
 libraryDependencies ++= Seq(
-	  "com.github.finagle" %% "finch-core" % "0.5.0",
+	  "com.github.finagle" %% "finch-core" % "0.6.0",
     "io.github.willb611" % "algorithms" % "0.1-SNAPSHOT"
 )
 

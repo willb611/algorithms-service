@@ -3,7 +3,7 @@ package services
 import algorithms.sequences.{CachingFibonacciFinder, FibonacciFinder}
 import com.twitter.finagle.Service
 import com.twitter.util.Future
-import io.finch.request.RequiredParam
+import io.finch.request.param
 import io.finch.response._
 import io.finch._
 
@@ -12,7 +12,7 @@ object FibonacciSequenceService extends Service[HttpRequest, HttpResponse] {
 
   override def apply(request: HttpRequest): Future[HttpResponse] = {
     for {
-      termNumber <- RequiredParam("termNumber")(request).map(_.toInt)
+      termNumber <- param("termNumber")(request).map(_.toInt)
     } yield {
       val result = fibonacciFinder.findNthTermInSequence(termNumber).intValue()
       Ok(s"$result")
