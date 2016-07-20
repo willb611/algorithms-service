@@ -8,7 +8,6 @@ import io.finch.request.param
 import io.finch.response._
 
 object BinomialService extends Service[Request, Response] {
-  val binomialCoefficientFinder = new BinomialCoefficient()
 
   override def apply(request: Request): Future[Response] = {
     for {
