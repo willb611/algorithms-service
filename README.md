@@ -1,2 +1,2 @@
 # algorithms-service
-Scala RPC web service for the solutions in the [Algorithms repisitory](https://github.com/willb611/algorithms)
+Scala RPC web service for some of the solutions in the [Algorithms repository](https://github.com/willb611/algorithms)
