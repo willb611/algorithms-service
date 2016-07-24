@@ -1,6 +1,10 @@
 *.class
 *.log
+
+# Ide specific
 .idea
+*.ipr
+*.iws
 
 # sbt specific
 .cache/
