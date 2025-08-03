@@ -2,13 +2,14 @@ name := """algorithms-service"""
 
 version := "0.0.1-SNAPSHOT"
 
-scalaVersion := "2.11.8"
+ThisBuild / scalaVersion := "2.11.12"
 
-mainClass in (Compile, run) := Some("WebServer") 
+Compile/mainClass := Some("WebServer")
+// mainClass in (Compile, run)
 
-crossScalaVersions := Seq("2.9.2", "2.11.8")
+crossScalaVersions := Seq("2.9.2", "2.11.8", "2.11.12")
 
-resolvers += Resolver.mavenLocal
+ThisBuild / resolvers += Resolver.mavenLocal
 
 libraryDependencies ++= Seq(
 	  "com.github.finagle" %% "finch-core" % "0.8.0",
